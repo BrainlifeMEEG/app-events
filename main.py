@@ -33,16 +33,20 @@ bids_path = BIDSPath(subject='subject',
 
 
 
-events = mne.find_events(raw, stim_channel=config['stim_channel'],
-                             consecutive=config['consecutive'], mask=config['mask'],
-                             mask_type=config['mask_type'], min_duration=config['min_duration'])
+events = mne.find_events(raw,stim_channel=config['stim_channel'],
+                            output=config['output'],
+                            consecutive=config['consecutive'],
+                            min_duration=config['min_duration'],
+                            shortest_event=config['shortest_event'],
+                            mask=config['mask'],
+                            uint_cast=config['uint_cast'],
+                            mask_type=config['mask_type'],
+                            initial_event=config['initial_event'])
 report = mne.Report(title='Event')
 
 sfreq = raw.info['sfreq']
 
-
-
-events = mne.pick_events(events, exclude=config['exclude'])
+events = mne.pick_events(events,include=config['include'],exclude=config['exclude'])
 
 str=config['ids']
 ids = [int(item) for item in str.split(',') if item.isdigit()]
