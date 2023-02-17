@@ -3,7 +3,7 @@ import numpy as np
 import mne
 import json
 import helper
-from mne_bids import BIDSPath, write_raw_bids
+from mne_bids import BIDSPath,write_raw_bids
 import shutil
 import matplotlib.pyplot as plt
 
@@ -16,7 +16,7 @@ with open('config.json') as config_json:
     config = helper.convert_parameters_to_None(json.load(config_json))
 
 data_file = config['fif']
-raw = mne.io.read_raw_fif(data_file, verbose=False)
+raw = mne.io.read_raw_fif(data_file,verbose=False)
 
 # Create a BIDSPath
 bids_path = BIDSPath(subject='subject',
@@ -52,7 +52,7 @@ str=config['ids']
 ids = [int(item) for item in str.split(',') if item.isdigit()]
 
 
-events = mne.merge_events(events, ids=ids, new_id=config['new_id'])
+events = mne.merge_events(events,ids=ids,new_id=config['new_id'])
 
 
 event_id_condition= config['event_id_condition']
