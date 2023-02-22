@@ -6,6 +6,7 @@ import helper
 from mne_bids import BIDSPath,write_raw_bids
 import shutil
 import matplotlib.pyplot as plt
+import re
 
 #workaround for -- _tkinter.TclError: invalid command name ".!canvas"
 import matplotlib
@@ -48,12 +49,12 @@ sfreq = raw.info['sfreq']
 
 events = mne.pick_events(events,include=config['include'],exclude=config['exclude'])
 
-str=config['ids']
-ids = [int(item) for item in str.split(',') if item.isdigit()]
+# take all events to combine (syntax = 1,2, 3, 4 -> 100)
+event_id_combine = re.split(' *, *| *-*> *',config['event_id_combine'])
+# take last name as 
+event_to = event_id_combine.pop()
 
-
-events = mne.merge_events(events,ids=ids,new_id=config['new_id'])
-
+events = mne.merge_events(events,ids=event_id_combine,new_id=event_to)
 
 event_id_condition= config['event_id_condition']
 # Convert String to Dictionary using strip() and split() methods
