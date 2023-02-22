@@ -50,21 +50,22 @@ sfreq = raw.info['sfreq']
 events = mne.pick_events(events,include=config['include'],exclude=config['exclude'])
 
 # take all events to combine (syntax = 1,2, 3, 4 -> 100)
-event_id_combine = re.split(' *, *| *-*> *',config['event_id_combine'])
-# take last name as 
-event_to = event_id_combine.pop()
+if config['event_id_combine']:
+    event_id_combine = re.split(' *, *| *-*> *',config['event_id_combine'])
+    # take last name as 
+    event_to = event_id_combine.pop()
 
-events = mne.merge_events(events,ids=event_id_combine,new_id=event_to)
+    events = mne.merge_events(events,ids=event_id_combine,new_id=event_to)
 
-event_id_condition= config['event_id_condition']
-# Convert String to Dictionary using strip() and split() methods
-event_id = dict((x.strip(), int(y.strip()))
-                for x, y in (element.split('-')
-                             for element in event_id_condition.split(', ')))
+# event_id_condition= config['event_id_condition']
+# # Convert String to Dictionary using strip() and split() methods
+# event_id = dict((x.strip(), int(y.strip()))
+#                 for x, y in (element.split('-')
+#                              for element in event_id_condition.split(', ')))
 
-id_list = list(event_id.values())
+# id_list = list(event_id.values())
 
-events = mne.pick_events(events, include=id_list)
+# events = mne.pick_events(events, include=id_list)
 
 
 
