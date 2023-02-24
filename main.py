@@ -42,7 +42,7 @@ events = mne.find_events(raw,stim_channel=config['stim_channel'],
                             uint_cast=config['uint_cast'],
                             mask_type=config['mask_type'],
                             initial_event=config['initial_event'])
-report = mne.Report(title='Event')
+report = mne.Report(title='Events')
 
 sfreq = raw.info['sfreq']
 
