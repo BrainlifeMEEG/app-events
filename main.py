@@ -71,7 +71,7 @@ events = mne.pick_events(events, include=id_list)
 
 # # Write BIDS to create events.tsv BIDS compliant
 write_raw_bids(raw, bids_path, events_data=events, event_id=event_id, overwrite=True)
-#
+
 # # Extract events.tsv from bids path
 events_file = 'bids/sub-subject/meg/sub-subject_task-task_run-01_events.tsv'
 #
