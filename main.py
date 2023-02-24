@@ -33,7 +33,6 @@ bids_path = BIDSPath(subject='subject',
                      root='bids')
 
 
-
 events = mne.find_events(raw,stim_channel=config['stim_channel'],
                             output=config['output'],
                             consecutive=config['consecutive'],
@@ -51,23 +50,24 @@ events = mne.pick_events(events,include=config['include'],exclude=config['exclud
 
 # take all events to combine (syntax = 1,2, 3, 4 -> 100)
 if config['event_id_combine']:
-    event_id_combine = re.split(' *, *| *-*> *',config['event_id_combine'])
+    event_id_combine = config['event_id_combine'].split('\n')
+    event_id_combine = [re.split(' *, *| *: *',ids) for ids in event_id_combine]
+    event_id_combine = [[int(id) for id in event] for event in event_id_combine]
     # take last name as 
-    event_to = event_id_combine.pop()
+    event_to = [id.pop() for id in event_id_combine]
 
-    events = mne.merge_events(events,ids=event_id_combine,new_id=event_to)
+    for ids, to in zip(event_id_combine, event_to):
+        events = mne.merge_events(events,ids=ids,new_id=to)
 
-# event_id_condition= config['event_id_condition']
-# # Convert String to Dictionary using strip() and split() methods
-# event_id = dict((x.strip(), int(y.strip()))
-#                 for x, y in (element.split('-')
-#                              for element in event_id_condition.split(', ')))
+event_id_condition= config['event_id_condition'].split('\n')
+event_id_condition = [re.split(' *: *',ids) for ids in event_id_condition]
 
-# id_list = list(event_id.values())
+event_id = dict((x, int(y))
+                for y, x in (event_id_condition))
 
-# events = mne.pick_events(events, include=id_list)
+id_list = list(event_id.values())
 
-
+events = mne.pick_events(events, include=id_list)
 
 # # Write BIDS to create events.tsv BIDS compliant
 write_raw_bids(raw, bids_path, events_data=events, event_id=event_id, overwrite=True)
