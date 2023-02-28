@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 with open('config.json') as config_json:
     config = helper.convert_parameters_to_None(json.load(config_json))
 
-data_file = config['fif']
+data_file = config['mne']
 raw = mne.io.read_raw_fif(data_file,verbose=False)
 
 events = mne.find_events(raw,stim_channel=config['stim_channel'],
