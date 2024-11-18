@@ -45,6 +45,7 @@ if config['event_id_combine']:
     for ids, to in zip(event_id_combine, event_to):
         events = mne.merge_events(events,ids=ids,new_id=to)
 
+#NEEDS TO HAVE A FORK IN CASE EVENT_ID_CONDITION IS EMPTY
 event_id_condition= config['event_id_condition'].replace('\n','')
 event_id = eval('{' + event_id_condition + '}')
 
